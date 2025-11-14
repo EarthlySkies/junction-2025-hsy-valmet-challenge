@@ -12,3 +12,6 @@
 ## it could lead to conditions where the other agents see no reason to empty
 ## the tanks. In such a case, the tank could never be emptied, breaching compliance.
 ## For that reason, this function to be in a separate, non-agent component.
+
+## This component can override the desires of the agents, as L1 simply **must**
+## be emptied, even if the agents don't necessarily believe it to be efficient.
