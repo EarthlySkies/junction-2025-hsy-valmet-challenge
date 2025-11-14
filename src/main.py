@@ -7,6 +7,8 @@ import os
 
 ## Start watcher here
 
-## Poll agents here (loop)
+## Loop
 
-## Pass sum of agent desires to plan executor
+  ## Poll agents here
+
+  ## Pass sum of agent desires to plan executor here
