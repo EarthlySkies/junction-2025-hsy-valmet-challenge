@@ -4,6 +4,9 @@
 import os
 
 ## Start agents and workers here
+## We'll need to fork the agents into their own processes as they'll be making
+## blocking operations. If we try to run everything in a single process, we'll
+## be blocking ourselves.
 
 ## Loop
 
