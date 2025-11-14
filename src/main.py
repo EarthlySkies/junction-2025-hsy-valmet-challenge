@@ -3,9 +3,7 @@
 
 import os
 
-## Start agents and components here
-
-## Start watcher here
+## Start agents and workers here
 
 ## Loop
 
