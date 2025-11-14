@@ -13,6 +13,6 @@ import multiprocessing
 ## Loop
 
   ## Poll agents here
-  ## Use queues, as the data transfers is only one way: child -> parent, agent -> controller
+  ## Use queues, as the data transfers is only one way: child -> parent, i.e. agent -> controller
 
   ## Pass sum of agent desires to plan executor here
