@@ -20,7 +20,7 @@ def storage_tracker_agent(desire_output):
     ## Calculate our pumping desire
     pumping_desire = float(current_water_level.text) / 8
 
-    ## Output pumping desire
+    ## Output pumping desire to agent watcher
     desire_output.put(pumping_desire)
 
     ## Advance water level simulation
