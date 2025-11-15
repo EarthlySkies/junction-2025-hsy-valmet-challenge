@@ -18,7 +18,7 @@ if __name__ == '__main__':
   ## Actual "proper" forking is more expensive
   mp.set_start_method('spawn')
 
-  pump_status_list = [100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  pump_status_list = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0]
   
   ## Loop
   while True:

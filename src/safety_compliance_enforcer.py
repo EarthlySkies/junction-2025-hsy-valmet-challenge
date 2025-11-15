@@ -45,3 +45,5 @@ def safety_compliance_enforcer(enforcer_state):
         
         ## Pass the enforcement value to main
         enforcer_state.put(emergency)
+
+        time.sleep(1)
