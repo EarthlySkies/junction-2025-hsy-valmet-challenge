@@ -81,6 +81,15 @@ if __name__ == '__main__':
       ## Skip the rest of the agent desire evaluations as we're in an emergency
       continue
 
+    ## TODO: Add tunnel emptier times here
+    ## Basically call the function and print the output to stdout
+
+    ## TODO: Activate pumps here
+
+    ## TODO: Write pump activations to stdout as a list
+    ## Index 0-5 is big pumps, index 6-7 is small pumps
+    ## List contains the current operating level of the pumps as 0-100 floats
+
     ## DEBUG: print 
     print(agent_desire_list)
 
