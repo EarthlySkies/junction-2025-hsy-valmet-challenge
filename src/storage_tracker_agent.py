@@ -4,3 +4,10 @@
 
 ## The job of this agent to prevent the storage from overflowing. Thus, it
 ## simply increases its desire as the water level rises in the storage.
+
+import time
+import random
+
+def storage_tracker_agent(desire_output):
+    desire_output.put(random.random())
+    time.sleep(5)

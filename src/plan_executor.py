@@ -5,3 +5,11 @@
 
 ## This worker will actually pass the 1 hour plans with 15 minute intervals to
 ## the pump controlling systems.
+
+import time
+import multiprocessing
+
+def plan_executor(watcher_data_socket):
+    while True:
+        print(watcher_data_socket.recv())
+        time.sleep(1)
