@@ -2,6 +2,7 @@
 ## Preliminary starting point for the whole program.
 ## The "actual stuff" is done in the agents and components themselves.
 
+import requests
 import multiprocessing as mp
 import time
 
@@ -51,6 +52,10 @@ if __name__ == '__main__':
     storage_tracker_agent = mp.Process(target= sta.storage_tracker_agent, args=(sta_read_socket,))
     storage_tracker_agent.start()
 
+    ## Advance the simulated data values to their next iterations
+    outflow_request = {"outflow":1}
+    requests.post("http://127.0.0.1:8000/outflow", json=outflow_request, timeout=5)
+
     ## Poll agents here
     ## Use queues, as the data transfers is only one way: child -> parent, i.e. agent -> controller
     
@@ -75,23 +80,40 @@ if __name__ == '__main__':
     #pa_write_socket.close()
     #plan_executor.join()
 
-    ## Enforce safety limits
-    if float(sce_read_socket.get()) == 1:
-      ## TODO: Pumps on at max here
-      ## Skip the rest of the agent desire evaluations as we're in an emergency
-      continue
+    ## Pump status list
+    ## Index 0-5 is big pumps, index 6-7 is small pumps
+    ## List contains the current operating level of the pumps as 0-100 floats
+    ## Last element is 100 by default as we must have at least one pump active
+    ## at all times.
+    pump_status_list = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0]
 
+    ## Enforce safety limits
+    ## 1 is if the L1 tunnel is close to flooding out completely
+    sce_status = float(sce_read_socket.get())
+    if sce_status == 1:
+      ## Power on as many pumps as possible to prevent L1 from flooding. We don't
+      ## want wastewater ending up at the streets so we pump despite the costs it
+      ## may incur.
+      pump_status_list = [100.0, 100.0, 100.0, 100.0, 100.0, 0.0, 0.0, 0.0]
+      ## Skip the rest of the agent desire evaluations as we're in an emergency
+      print(pump_status_list)
+      continue
+    elif sce_status == -1:
+      ## This is for when L2 is threatening to flood. We put the pumps to minumum
+      ## to give time for the WWTP to deal with the water in L2 before pushing more in.
+      ## In this current state, the SCE currently never reaches this value.
+      ##
+      ## We can continue straight away as our default configuration is to pump at
+      ## minumum capacity, i.e. one small pump.
+      continue
+    
     ## TODO: Add tunnel emptier times here
     ## Basically call the function and print the output to stdout
 
     ## TODO: Activate pumps here based on desire
 
-    ## TODO: Write pump activations to stdout as a list
-    ## Index 0-5 is big pumps, index 6-7 is small pumps
-    ## List contains the current operating level of the pumps as 0-100 floats
-
-    ## DEBUG: print 
-    print(agent_desire_list)
+    ## Write pump activations to stdout as a list
+    print(pump_status_list)
 
     ## Simulate operations via sleep
     ## Placeholder code for now
