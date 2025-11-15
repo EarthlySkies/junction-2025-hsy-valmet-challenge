@@ -6,14 +6,7 @@
 ## on a given day. We can use this data to predict future prices and optimize
 ## our pumping to times of low cost.
 
-import time
-import random
+import requests
 
 def electricity_tracker_agent(desire_output):
-    while True:
-    ## For now, we only have placeholder code
-    ## Later, we'll do the sensor polling here
-
-    ## For now, we'll output a random value as a placeholder
-        desire_output.put(random.random())
-        time.sleep(5)
+    
