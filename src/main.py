@@ -143,7 +143,6 @@ if __name__ == '__main__':
     outflow_request = {"outflow": total_outflow}
     requests.post("http://127.0.0.1:8000/outflow", json=outflow_request, timeout=5)
 
-
     if (agent_desire_list[0] + agent_desire_list[1]) > 1.1:
       pump_status_list = switch_first_zero(pump_status_list)
       print("added pump")
