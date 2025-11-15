@@ -8,7 +8,7 @@
 import requests
 
 def storage_tracker_agent(desire_output):
-    ## Fetch storage level
+    ## Fetch storage level from the simulation server
     current_water_level = requests.get("http://127.0.0.1:8000/water-level")
     ## DEBUG: print
     print("Current water level: ", current_water_level.text)
