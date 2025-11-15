@@ -19,7 +19,7 @@
 import time
 import random
 
-def safety_compliance_enforcer(enforcer_state):
+def safety_compliance_enforcer(enforcer_state, water_level):
     ## This is the state of the enforcer
     ## Acceptable values are -1, 0, +1
 
@@ -31,8 +31,11 @@ def safety_compliance_enforcer(enforcer_state):
         ## For now, we only have placeholder code
         ## Later, we'll do the sensor polling here
 
+        emergency = 0
+        if water_level > 6:
+            emergency = 1
         ## For now, we'll default to 0
-        enforcer_state.put(random.random())
+        enforcer_state.put(emergency)
 
         ## Simulate polling sensors via sleep
         time.sleep(10)
