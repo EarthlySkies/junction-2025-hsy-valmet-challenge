@@ -3,9 +3,14 @@ from fastapi.responses import PlainTextResponse
 import uvicorn
 from pydantic import BaseModel
 
+
+#todo
+#add data from dataset later (make the values in scenarios copy it more)
+#add constant inflow (from data)
+
 water_level = 2.0
 
-max_water_level = 10
+max_water_level = 10.0
 scenario_to_use = 0
 
 ### Rain scenarios - lets say the values can be only from 0 to 5
@@ -33,6 +38,13 @@ elec = [
 	4, 5, 6, 2,
 	1, 1, 1, 2,
 	2, 3, 2, 1
+]
+]
+
+### Normal dry inflow scenarios
+dry_inflow = [
+[
+
 ]
 ]
 

@@ -20,7 +20,7 @@ outflow = {
     "outflow": 1.0,
 }
 
-#each 15 minutes yo
+#each 15 minutes you submit what outflow are you making with the pumps
 pass_15_min = requests.post("http://127.0.0.1:8000/outflow", json=outflow, timeout=5)
 
 current_water_level = requests.get("http://127.0.0.1:8000/water-level")
