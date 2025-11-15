@@ -17,7 +17,7 @@ def storage_tracker_agent(desire_output):
     ## safety margins, as 8.0 is L1 MAX. It should also remain above 0.0, as that
     ## is L1 MIN.
 
-    ## Calculate our pumping desire
+    ## Calculate our pumping desire based on used storage
     pumping_desire = float(current_water_level.text) / 8
 
     ## Output pumping desire to agent watcher
