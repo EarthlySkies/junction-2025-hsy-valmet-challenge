@@ -26,9 +26,6 @@ if __name__ == '__main__':
   ## at all times regardless of flow.
   pump_status_list = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0]
   
-  ## We must keep track of the water outflows from L1
-  total_outflow = 0
-
   ## We'll need this list to keep track of how long a given pump has been operational
   ## The indexes match the pumps in pump_status_list
   pump_uptime_list = [0, 0, 0, 0, 0, 0, 0, 0]
@@ -140,6 +137,9 @@ if __name__ == '__main__':
             arr[i] = 0.0
             break
       return arr
+
+    ## We must keep track of the water outflows from L1
+    total_outflow = 0
 
     for x in pump_status_list:
       if x == 100.0:
