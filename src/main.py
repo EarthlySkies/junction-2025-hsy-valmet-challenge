@@ -18,6 +18,8 @@ if __name__ == '__main__':
   ## Actual "proper" forking is more expensive
   mp.set_start_method('spawn')
 
+  pump_status_list = [100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  
   ## Loop
   while True:
     ## Start agents and workers here
@@ -54,9 +56,7 @@ if __name__ == '__main__':
     storage_tracker_agent.start()
 
     ## Advance the simulated data values to their next iterations
-    outflow_request = {"outflow":1}
-    requests.post("http://127.0.0.1:8000/outflow", json=outflow_request, timeout=5)
-
+    
     ## Poll agents here
     ## Use queues, as the data transfers is only one way: child -> parent, i.e. agent -> controller
     
@@ -76,6 +76,8 @@ if __name__ == '__main__':
     agent_desire_list.append(eta_read_socket.get())
     agent_desire_list.append(sta_read_socket.get())
 
+    print("The desire list is")
+    print(agent_desire_list)
     ## Pass agent states to plan executor
     #pa_write_socket.send(agent_desire_list)
     #pa_write_socket.close()
@@ -86,7 +88,7 @@ if __name__ == '__main__':
     ## List contains the current operating level of the pumps as 0-100 floats
     ## Last element is 100 by default as we must have at least one pump active
     ## at all times.
-    pump_status_list = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0]
+    
 
     ## Enforce safety limits
     ## 1 is if the L1 tunnel is close to flooding out completely
@@ -111,13 +113,43 @@ if __name__ == '__main__':
     ## Output our projected tunnel empty times to stdout
     ## These values are based on the data the program is given in a single simulation
     ## cycle and might not ever be reached with set of simulated data.
-    tunnel_empty_timestamps = te.optimal_tunnelwindow()
-    print("Tunnel emptying starts at:")
-    print(tunnel_empty_timestamps[0])
-    print("Tunnel will be empty by:")
-    print(tunnel_empty_timestamps[1])
+    # tunnel_empty_timestamps = te.optimal_tunnelwindow()
+    # print("Tunnel emptying starts at:")
+    # print(tunnel_empty_timestamps[0])
+    # print("Tunnel will be empty by:")
+    # print(tunnel_empty_timestamps[1])
 
     ## TODO: Activate pumps here based on desire
+    def switch_first_zero(arr):
+      for i, v in enumerate(arr):
+        if v == 0.0:
+            arr[i] = 100.0
+            break
+      return arr
+    
+    def switch_last_one_back(arr):
+      # go from the back to the front
+      for i in range(len(arr) - 1, -1, -1):
+        if arr[i] == 100.0:
+            arr[i] = 0.0
+            break
+      return arr
+
+    total_outflow = 0
+    for x in pump_status_list:
+      if x == 100.0:
+        total_outflow = total_outflow + 1.0
+      
+    outflow_request = {"outflow": total_outflow}
+    requests.post("http://127.0.0.1:8000/outflow", json=outflow_request, timeout=5)
+
+
+    if (agent_desire_list[0] + agent_desire_list[1]) > 1.1:
+      pump_status_list = switch_first_zero(pump_status_list)
+      print("added pump")
+    if(agent_desire_list[0]+ agent_desire_list[1]) < 0.7:
+      pump_status_list = switch_last_one_back(pump_status_list)
+      print("removed pump")
 
     ## Write pump activations to stdout as a list
     print("Pump activation statuses:")
