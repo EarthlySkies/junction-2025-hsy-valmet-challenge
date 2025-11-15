@@ -36,12 +36,12 @@ def safety_compliance_enforcer(enforcer_state):
         current_water_level = requests.get("http://127.0.0.1:8000/water-level")
         current_water_level = float(current_water_level.text)
 
+        ## Default to no emergency
         emergency = 0
+        
+        ## If the water level is above the safety value, start an emergy empty
         if current_water_level > 7.5:
             emergency = 1
         
-        ## For now, we'll default to 0
+        ## Pass the enforcement value to main
         enforcer_state.put(emergency)
-
-        ## Simulate polling sensors via sleep
-        time.sleep(10)
