@@ -17,7 +17,6 @@
 ## +1: Pump at maximum
 
 import time
-import random
 
 def safety_compliance_enforcer(enforcer_state, water_level):
     ## This is the state of the enforcer
@@ -27,13 +26,15 @@ def safety_compliance_enforcer(enforcer_state, water_level):
     ## within predefined safety margins. If the system passes a safety marging,
     ## we respond to it by either halting the pumps or pumping at maximum capacity,
     ## depending on the kind of safety hazard we're experiencing.
+
     while True:
         ## For now, we only have placeholder code
         ## Later, we'll do the sensor polling here
 
         emergency = 0
-        if water_level > 6:
+        if water_level > 7.5:
             emergency = 1
+        
         ## For now, we'll default to 0
         enforcer_state.put(emergency)
 
