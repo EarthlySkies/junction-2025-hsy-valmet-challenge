@@ -130,7 +130,7 @@ if __name__ == '__main__':
     def switch_last_one_back(arr):
       # go from the back to the front
       for i in range(len(arr) - 1, -1, -1):
-        if arr[i] == 100.0:
+        if arr[i] == 100.0 and i != 0:
             arr[i] = 0.0
             break
       return arr
@@ -150,6 +150,10 @@ if __name__ == '__main__':
     if(agent_desire_list[0]+ agent_desire_list[1]) < 0.7:
       pump_status_list = switch_last_one_back(pump_status_list)
       print("removed pump")
+    elif agent_desire_list[1] == 0:
+      pump_status_list = switch_last_one_back(pump_status_list)
+      print("removed pump")
+
 
     ## Write pump activations to stdout as a list
     print("Pump activation statuses:")
