@@ -17,12 +17,13 @@
 ## +1: Pump at maximum
 
 import time
+import requests
 
-def safety_compliance_enforcer(enforcer_state, water_level):
+def safety_compliance_enforcer(enforcer_state):
     ## This is the state of the enforcer
     ## Acceptable values are -1, 0, +1
 
-    ## In this loop, we poll various sensors to ensure that the system is operating
+    ## In this loop, we poll "various sensors" to ensure that the system is operating
     ## within predefined safety margins. If the system passes a safety marging,
     ## we respond to it by either halting the pumps or pumping at maximum capacity,
     ## depending on the kind of safety hazard we're experiencing.
@@ -31,8 +32,12 @@ def safety_compliance_enforcer(enforcer_state, water_level):
         ## For now, we only have placeholder code
         ## Later, we'll do the sensor polling here
 
+        ## Get simulated water level
+        current_water_level = requests.get("http://127.0.0.1:8000/water-level")
+        current_water_level = float(current_water_level.text)
+
         emergency = 0
-        if water_level > 7.5:
+        if current_water_level > 7.5:
             emergency = 1
         
         ## For now, we'll default to 0

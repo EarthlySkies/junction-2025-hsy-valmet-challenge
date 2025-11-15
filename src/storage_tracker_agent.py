@@ -27,7 +27,3 @@ def storage_tracker_agent(desire_output):
 
     ## Output pumping desire to agent watcher
     desire_output.put(pumping_desire)
-
-    ## Advance water level simulation
-    outflow_request = {"outflow":1}
-    requests.post("http://127.0.0.1:8000/outflow", json=outflow_request, timeout=5)

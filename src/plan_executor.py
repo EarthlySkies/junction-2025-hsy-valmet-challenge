@@ -12,7 +12,7 @@ import multiprocessing
 def plan_executor(watcher_data_socket):
     while True:
         try:
-            print(watcher_data_socket.recv())
+            print(watcher_data_socket.read())
         except EOFError:
             time.sleep(1)
         time.sleep(2)
