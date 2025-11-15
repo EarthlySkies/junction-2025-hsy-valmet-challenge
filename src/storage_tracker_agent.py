@@ -10,8 +10,6 @@ import requests
 def storage_tracker_agent(desire_output):
     ## Fetch storage level from the simulation server
     current_water_level = requests.get("http://127.0.0.1:8000/water-level")
-    ## DEBUG: print
-    print("Current water level: ", current_water_level.text)
 
     ## Water level should always be below 8.0 meters to stay within pre-approved
     ## safety margins, as 8.0 is L1 MAX. It should also remain above 0.0, as that
