@@ -11,6 +11,7 @@ import inflow_tracker_agent as ita
 import electricity_tracker_agent as eta
 import storage_tracker_agent as sta
 import plan_executor as pa
+import tunnel_emptier as te
 
 if __name__ == '__main__':
   ## "Spawn" is the recommended method for Python
@@ -60,8 +61,8 @@ if __name__ == '__main__':
     ## Use queues, as the data transfers is only one way: child -> parent, i.e. agent -> controller
     
     ## For now, these calls are blocking, meaning we have to wait for all agents
-    ## and workers to finish their sensor polling before we get an updated view
-    ## of the system's state. This could be optimzed to be done in parallel.
+    ## and workers to finish their "sensor polling" before we get an updated view
+    ## of the system's state. This is done in parallel in dedicated processes for optimization.
     ##
     ## However, we elected not to do so for this concept, as the smallest unit
     ## of time we'll be working with is 15 minutes, as the pumps can't be controlled
@@ -107,12 +108,19 @@ if __name__ == '__main__':
       ## minumum capacity, i.e. one small pump.
       continue
     
-    ## TODO: Add tunnel emptier times here
-    ## Basically call the function and print the output to stdout
+    ## Output our projected tunnel empty times to stdout
+    ## These values are based on the data the program is given in a single simulation
+    ## cycle and might not ever be reached with set of simulated data.
+    tunnel_empty_timestamps = te.optimal_tunnelwindow()
+    print("Tunnel emptying starts at:")
+    print(tunnel_empty_timestamps[0])
+    print("Tunnel will be empty by:")
+    print(tunnel_empty_timestamps[1])
 
     ## TODO: Activate pumps here based on desire
 
     ## Write pump activations to stdout as a list
+    print("Pump activation statuses:")
     print(pump_status_list)
 
     ## Simulate operations via sleep
