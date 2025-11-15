@@ -84,7 +84,7 @@ if __name__ == '__main__':
     ## TODO: Add tunnel emptier times here
     ## Basically call the function and print the output to stdout
 
-    ## TODO: Activate pumps here
+    ## TODO: Activate pumps here based on desire
 
     ## TODO: Write pump activations to stdout as a list
     ## Index 0-5 is big pumps, index 6-7 is small pumps
