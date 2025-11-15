@@ -1,39 +1,56 @@
+#!/usr/bin/env python3
 ## Preliminary starting point for the whole program.
 ## The "actual stuff" is done in the agents and components themselves.
 
-import os
+import multiprocessing as mp
+import time
 
-## Start agents and components here
+import safety_compliance_enforcer as sce
+import inflow_tracker_agent as ita
 
-## Start watcher here
+if __name__ == '__main__':
+  ## Start agents and workers here
+  ##
+  ## We'll need to get the agents into their own processes as they'll be making
+  ## blocking operations. If we try to run everything in a single process, we'll
+  ## be blocking ourselves.
 
-## Poll agents here (loop)
+  ## "Spawn" is the recommended method for Python
+  ## Actual "proper" forking is more expensive
+  mp.set_start_method('spawn')
 
-## Pass sum of agent desires to plan executor
+  ## Safety compliance enforcer worker start
+  sce_read_socket = mp.Queue()
+  safety_compliance_enforcer_worker = mp.Process(target= sce.safety_compliance_enforcer, args=(sce_read_socket,))
+  safety_compliance_enforcer_worker.start()
 
+  ## Inflow tracker agent start
+  ita_read_socket = mp.Queue()
+  inflow_tracker_agent = mp.Process(target= ita.inflow_tracker_agent, args=(ita_read_socket,))
+  inflow_tracker_agent.start()
 
-### Interacting with the simulation 
+  ## Rain tracker agent start
 
-import requests
+  ## Electricity tracker agent start
 
-outflow = {
-    "outflow": 1.0,
-}
+  ## Storage tracker agent start
 
-#each 15 minutes you submit what outflow are you making with the pumps
-pass_15_min = requests.post("http://127.0.0.1:8000/outflow", json=outflow, timeout=5)
+  ## Loop
+  while True:
+    ## Poll agents here
+    ## Use queues, as the data transfers is only one way: child -> parent, i.e. agent -> controller
+    
+    ## For now, these calls are blocking, meaning we have to wait for all agents
+    ## and workers to finish their sensor polling before we get an updated view
+    ## of the system's state. This could be optimzed to be done in parallel.
+    ##
+    ## However, we elected not to do so for this concept, as the smallest unit
+    ## of time we'll be working with is 15 minutes, as the pumps can't be controlled
+    ## in any less amount of time.
+    print(sce_read_socket.get())
+    print(ita_read_socket.get())
 
-current_water_level = requests.get("http://127.0.0.1:8000/water-level")
+    ## Simulate operations via sleep
+    time.sleep(1)
 
-#rain in 15 min
-next_rain = requests.get("http://127.0.0.1:8000/next-rain")
-
-#elec at current time
-current_elec_price = requests.get("http://127.0.0.1:8000/current-elec-price")
-
-#elec prices in the future
-all_upcoming_elec_price = requests.get("http://127.0.0.1:8000/all-upcoming-elec-price")
-
-
-
-
+    ## Pass agent states to plan executor
