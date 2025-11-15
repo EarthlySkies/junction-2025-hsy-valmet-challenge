@@ -14,6 +14,7 @@ def electricity_tracker_agent(desire_output):
     upcoming_electricity_prices = requests.get("http://127.0.0.1:8000/all-upcoming-elec-price")
     upcoming_electricity_prices = upcoming_electricity_prices.text
     upcoming_electricity_prices = ast.literal_eval(upcoming_electricity_prices)
+    upcoming_electricity_prices = [float(price) for price in upcoming_electricity_prices]
     print(upcoming_electricity_prices)
 
     ## Figure out highest price
@@ -26,25 +27,33 @@ def electricity_tracker_agent(desire_output):
     print(min_upcoming_price)
     print(max_upcoming_price)
     price_range = float(max_upcoming_price) - float(min_upcoming_price)
-    ## Find the middle point of the 24 hours
-    mid_price = float(min_upcoming_price) + price_range / 2
+    ## Find the median price of the upcoming 24 hours
+    sorted_prices = sorted(upcoming_electricity_prices)
+    n = len(sorted_prices)
+    if n % 2 == 0:
+        mid_price = (float(sorted_prices[n//2 - 1]) + float(sorted_prices[n//2])) / 2
+    else:
+        mid_price = float(sorted_prices[n//2])
 
     ## Compare the current hour price to upcoming price to see how desirable
     ## pumping right now is.
-    if upcoming_electricity_prices[0] <= min_upcoming_price:
+    current_price = float(upcoming_electricity_prices[0])
+    
+    if current_price <= min_upcoming_price:
         pumping_desire = 1.0
-    elif upcoming_electricity_prices[0] >= max_upcoming_price:
+    elif current_price >= max_upcoming_price:
         pumping_desire = -1.0
-    elif float(upcoming_electricity_prices[0]) < mid_price:
-        pumping_desire = float(min_upcoming_price) / float(upcoming_electricity_prices[0])
+    elif current_price < mid_price:
+        ## Scale from +1.0 (at min) to 0 (at median)
+        pumping_desire = 1.0 - (current_price - min_upcoming_price) / (mid_price - min_upcoming_price)
     else:
-        pumping_desire = float(upcoming_electricity_prices[0]) / float(max_upcoming_price)
-
-    ## Get the actual pumping desire
-    pumping_desire = pumping_desire / float(max_upcoming_price)
+        ## Scale from 0 (at median) to -1.0 (at max)
+        pumping_desire = -(current_price - mid_price) / (max_upcoming_price - mid_price)
 
     ## Output pumping desire to agent watcher
-    desire_output.put(pumping_desire)
+    #desire_output.put(pumping_desire)
 
     ## DEBUG: print
     print(pumping_desire)
+
+electricity_tracker_agent(None)
