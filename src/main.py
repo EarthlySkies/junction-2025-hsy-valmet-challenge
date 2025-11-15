@@ -12,17 +12,16 @@ import storage_tracker_agent as sta
 import plan_executor as pa
 
 if __name__ == '__main__':
-  
+  ## "Spawn" is the recommended method for Python
+  ## Actual "proper" forking is more expensive
+  mp.set_start_method('spawn')
 
   ## Loop
-  while True:## Start agents and workers here
+  while True:
+    ## Start agents and workers here
     ## We'll need to get the agents into their own processes as they'll be making
     ## blocking operations. If we try to run everything in a single process, we'll
     ## be blocking ourselves.
-
-    ## "Spawn" is the recommended method for Python
-    ## Actual "proper" forking is more expensive
-    mp.set_start_method('spawn')
 
     ## Safety compliance enforcer worker start
     #sce_read_socket = mp.Queue()
@@ -72,7 +71,7 @@ if __name__ == '__main__':
     agent_desire_list.append(sta_read_socket.get())
 
     ## DEBUG: print
-    print(agent_desire_list)
+    #print(agent_desire_list)
 
     ## Pass agent states to plan executor
     #pa_write_socket.send(agent_desire_list)
