@@ -14,7 +14,6 @@
 ## +1: Pump at maximum
 
 import time
-import multiprocessing as mp
 
 def safety_compliance_enforcer(enforcer_state):
     ## This is the state of the enforcer
@@ -30,4 +29,6 @@ def safety_compliance_enforcer(enforcer_state):
 
         ## For now, we'll default to 0
         enforcer_state.put('0')
+
+        ## Simulate polling sensors via sleep
         time.sleep(10)
