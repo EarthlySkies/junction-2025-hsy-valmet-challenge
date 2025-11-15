@@ -16,10 +16,11 @@
 ## +1: Pump at maximum
 
 import time
+import multiprocessing as mp
+
 def safety_compliance_enforcer(enforcer_state):
     ## This is the state of the enforcer
     ## Acceptable values are -1, 0, +1
-    enforcer_state = 0
 
     ## In this loop, we poll various sensors to ensure that the system is operating
     ## within predefined safety margins. If the system passes a safety marging,
@@ -27,4 +28,8 @@ def safety_compliance_enforcer(enforcer_state):
     ## depending on the kind of safety hazard we're experiencing.
     while True:
         ## For now, we only have placeholder code
+        ## Later, we'll do the sensor polling here
+
+        ## For now, we'll default to 0
+        enforcer_state.put('0')
         time.sleep(10)

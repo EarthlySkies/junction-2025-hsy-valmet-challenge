@@ -1,8 +1,9 @@
+#!/usr/bin/env python3
 ## Preliminary starting point for the whole program.
 ## The "actual stuff" is done in the agents and components themselves.
 
-import os
 import multiprocessing as mp
+import time
 
 import safety_compliance_enforcer as sce
 
@@ -28,8 +29,9 @@ if __name__ == '__main__':
 ## be blocking ourselves.
 
 ## Loop
-
+  while True:
   ## Poll agents here
   ## Use queues, as the data transfers is only one way: child -> parent, i.e. agent -> controller
-
+    print(sce_read_socket.get())
+    time.sleep(1)
   ## Pass sum of agent desires to plan executor here
