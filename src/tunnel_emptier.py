@@ -75,7 +75,7 @@ def adays_data(price_list):
 
 def optimal_time_to_empty(price_list):
     hourly_prices = adays_data(price_list)
-    window_size = 8
+    window_size = 34
     best_sum = float('inf')
     best_start = None
     for i in range(len(hourly_prices) - window_size + 1):
