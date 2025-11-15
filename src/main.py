@@ -28,8 +28,11 @@ current_water_level = requests.get("http://127.0.0.1:8000/water-level")
 #rain in 15 min
 next_rain = requests.get("http://127.0.0.1:8000/next-rain")
 
-#elec
+#elec at current time
 current_elec_price = requests.get("http://127.0.0.1:8000/current-elec-price")
+
+#elec prices in the future
+all_upcoming_elec_price = requests.get("http://127.0.0.1:8000/all-upcoming-elec-price")
 
 
 

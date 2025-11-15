@@ -8,7 +8,7 @@ water_level = 2.0
 max_water_level = 10
 scenario_to_use = 0
 
-### Rain scenarios
+### Rain scenarios - lets say the values can be only from 0 to 5
 rain = [
 [
 	2, 3, 3, 3, 
@@ -82,6 +82,10 @@ async def water():
 @app.get("/current-elec-price", response_class=PlainTextResponse)
 async def elec_price():
 	return str(elec[scenario_to_use][CURRENT_TICK])
+
+@app.get("/all-upcoming-elec-price", response_class=PlainTextResponse)
+async def all_upcoming_elec_price():
+	return str(elec[scenario_to_use][CURRENT_TICK:])
 
 @app.get("/next-rain", response_class=PlainTextResponse)
 async def incoming_rain():
