@@ -70,9 +70,6 @@ if __name__ == '__main__':
     #agent_desire_list.append(eta_read_socket.get())
     agent_desire_list.append(sta_read_socket.get())
 
-    ## DEBUG: print
-    print(agent_desire_list)
-
     ## Pass agent states to plan executor
     #pa_write_socket.send(agent_desire_list)
     #pa_write_socket.close()
