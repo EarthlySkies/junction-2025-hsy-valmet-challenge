@@ -10,40 +10,66 @@ from pydantic import BaseModel
 
 water_level = 2.0
 
-max_water_level = 10.0
+max_water_level = 7.5
 scenario_to_use = 0
 
-### Rain scenarios - lets say the values can be only from 0 to 5
-rain = [
-[
-	2, 3, 3, 3, 
-	4, 5, 1, 0, 
-	0, 3, 4, 4, 
-	2, 4, 4, 5, 
-	0, 0, 0, 0, 
-	1, 1, 1, 1,
-	3, 4, 5, 5,
-	2, 1, 0, 0
-]
-]
 
 ### Eletricity scenarios
 elec = [
 [
-	1, 1, 1, 5, 
-	10, 15, 2, 2, 
-	2, 1, 4, 4,
-	4, 2, 2, 1,
-	3, 4, 1, 2,
-	4, 5, 6, 2,
-	1, 1, 1, 2,
-	2, 3, 2, 1
+[
+	0.21, 1.36, 0.1, 2.4, 0.1, 
+ 	0.1, 0.16, 0.1, 0.97, 0.1, 
+ 	0.1, 0.1, 0.1, 1.72, 2.63, 
+ 	1.87, 0.1, 0.1, 2.56, 1.77, 
+ 	0.96, 3.43, 4.82, 2.1, 4.3, 
+ 	2.98, 3.23, 1.81, 2.42, 4.09,
+	2.41, 3.03, 4.93, 0.94, 0.1, 
+	2.4, 0.77, 0.1, 0.1, 1.88, 0.1,
+	1.23, 0.63, 0.1, 1.13, 0.6, 0.1,
+	0.1, 0.1, 1.62, 0.1, 0.1, 0.1, 0.1,
+	2.67, 3.79, 3.57, 5.21, 2.15, 0.87,
+	0.1, 0.1, 1.21, 1.24, 2.3, 2.73,
+	3.13, 3.19, 4.22, 1.96, 0.84, 
+	0.17, 0.1, 2.67, 4.44, 2.72, 
+	3.18, 2.56, 0.18, 0.1, 0.1, 2.19,
+	1.14, 2.81, 1.76, 0.65, 2.43, 2.56, 
+	0.1, 0.1, 0.11, 0.1, 0.1, 1.58, 0.1, 0.1]
 ]
 ]
 
 ### Normal dry inflow scenarios
 dry_inflow = [
 [
+    1.15, 0.9399999999999999, 0.79, 0.89,
+    1.02, 0.92, 0.97, 0.85,
+    1.1, 1.11, 0.97, 1, 0.84,
+    0.5600000000000001, 0.5,
+    0.74, 0.93, 1.11, 0.91, 0.95,
+    1.29, 0.96, 0.78, 0.79, 0.71,
+    0.78, 1.1, 1.1, 0.75, 0.62,
+    0.99, 0.89, 0.9399999999999999,
+    0.98, 1.07, 0.89, 0.91, 0.58,
+    0.5, 0.5, 0.9, 0.71,
+    0.5, 0.71, 0.6,
+    0.5600000000000001,
+    0.96, 1.14, 1.43,
+    1.67, 1.43, 1.65,
+    1.74, 1.46, 1.59,
+		1.34, 1.24, 1.08,
+    1.23, 1.48, 1.62,
+		1.79, 1.82, 1.66,
+		1.58, 1.36, 1.53,
+    1.39, 1.06, 1.28,
+    1.02, 0.95, 1.11,
+    0.86, 1.1, 1.32,
+    1.32, 1.0, 0.8100000000000001,
+    0.79, 0.91,0.88,
+    0.71, 0.62, 0.5,
+    0.5, 0.9, 0.58,
+    0.72, 0.96, 1.16,
+    0.79, 0.78, 0.85,
+    1.03, 0.6899999999999999
 ]
 ]
 
@@ -58,12 +84,12 @@ def GameLoop():
 	global LOST
 	global CURRENT_TICK
 		
-	water_level = water_level + (rain[scenario_to_use][CURRENT_TICK]) - (CURRENT_ADDITIONAL_OUTFLOW)
+	water_level = water_level + (dry_inflow[scenario_to_use][CURRENT_TICK]) - (CURRENT_ADDITIONAL_OUTFLOW)
 		
 	if(water_level > max_water_level):
 		LOST = True
 
-	if CURRENT_TICK < (len(rain[scenario_to_use]) - 1):
+	if CURRENT_TICK < (len(dry_inflow[scenario_to_use]) - 1):
 		CURRENT_TICK = CURRENT_TICK + 1
 	else:
 		CURRENT_TICK = 0
@@ -98,12 +124,12 @@ async def elec_price():
 async def all_upcoming_elec_price():
 	return str(elec[scenario_to_use][CURRENT_TICK:])
 
-@app.get("/next-rain", response_class=PlainTextResponse)
-async def incoming_rain():
-	if CURRENT_TICK + 1 == len(rain[scenario_to_use]):
-		return str(rain[scenario_to_use][0])
+@app.get("/next-dry_inflow", response_class=PlainTextResponse)
+async def incoming_dry_inflow():
+	if CURRENT_TICK + 1 == len(dry_inflow[scenario_to_use]):
+		return str(dry_inflow[scenario_to_use][0])
 	else:
-		return str(rain[scenario_to_use][CURRENT_TICK+1])
+		return str(dry_inflow[scenario_to_use][CURRENT_TICK+1])
 
 if __name__ == "__main__":
 	# Run using the app object directly to ensure startup events run
