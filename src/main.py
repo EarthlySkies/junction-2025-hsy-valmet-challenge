@@ -68,7 +68,7 @@ if __name__ == '__main__':
     ## of time we'll be working with is 15 minutes, as the pumps can't be controlled
     ## in any less amount of time.
 
-    ## Agent desire list
+    ## Agent desire list. This contains all the desire outputs of agents
     agent_desire_list = []
 
     #agent_desire_list.append(sce_read_socket.get())
