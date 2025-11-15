@@ -44,7 +44,6 @@ elec = [
 ### Normal dry inflow scenarios
 dry_inflow = [
 [
-1
 ]
 ]
 
