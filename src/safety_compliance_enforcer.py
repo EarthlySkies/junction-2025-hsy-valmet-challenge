@@ -8,6 +8,9 @@
 ## limit, this enforcer will ensure more pumps are activated to prevent
 ## overflows and safety limits.
 
+## When the system is operating wihtin safe limits, this worker does not
+## care about optimization, and thus stays silent.
+
 ## This worker has three states:
 ## -1: Reduce pumping to minimum
 ##  0: No output (see note above)

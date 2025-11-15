@@ -7,6 +7,7 @@ import time
 
 import safety_compliance_enforcer as sce
 import inflow_tracker_agent as ita
+import electricity_tracker_agent as eta
 
 if __name__ == '__main__':
   ## Start agents and workers here
@@ -32,6 +33,8 @@ if __name__ == '__main__':
   ## Rain tracker agent start
 
   ## Electricity tracker agent start
+  eta_read_socket = mp.Queue()
+  
 
   ## Storage tracker agent start
 
