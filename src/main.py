@@ -36,20 +36,20 @@ if __name__ == '__main__':
     ## Rain tracker agent start
 
     ## Electricity tracker agent start
-    #eta_read_socket = mp.Queue()
-    #electricity_tracker_agent = mp.Process(target= eta.electricity_tracker_agent, args=(eta_read_socket,))
-    #electricity_tracker_agent.start()
-
-    ## Storage tracker agent start
-    sta_read_socket = mp.Queue()
-    storage_tracker_agent = mp.Process(target= sta.storage_tracker_agent, args=(sta_read_socket,))
-    storage_tracker_agent.start()
+    eta_read_socket = mp.Queue()
+    electricity_tracker_agent = mp.Process(target= eta.electricity_tracker_agent, args=(eta_read_socket,))
+    electricity_tracker_agent.start()
 
     ## Plan executor start
     ## This needs to be a pipe as we'll need to write data to the executor (a child)
     #pa_write_socket, pa_read_socket = mp.Pipe()
     #plan_executor = mp.Process(target= pa.plan_executor, args=(pa_read_socket,))
     #plan_executor.start()
+
+    ## Storage tracker agent start
+    sta_read_socket = mp.Queue()
+    storage_tracker_agent = mp.Process(target= sta.storage_tracker_agent, args=(sta_read_socket,))
+    storage_tracker_agent.start()
 
     ## Poll agents here
     ## Use queues, as the data transfers is only one way: child -> parent, i.e. agent -> controller
@@ -69,9 +69,6 @@ if __name__ == '__main__':
     #agent_desire_list.append([ita_read_socket.get()])
     #agent_desire_list.append(eta_read_socket.get())
     agent_desire_list.append(sta_read_socket.get())
-
-    ## DEBUG: print
-    print(agent_desire_list)
 
     ## Pass agent states to plan executor
     #pa_write_socket.send(agent_desire_list)
