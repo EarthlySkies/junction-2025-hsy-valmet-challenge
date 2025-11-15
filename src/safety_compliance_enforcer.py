@@ -17,6 +17,7 @@
 ## +1: Pump at maximum
 
 import time
+import random
 
 def safety_compliance_enforcer(enforcer_state):
     ## This is the state of the enforcer
@@ -31,7 +32,7 @@ def safety_compliance_enforcer(enforcer_state):
         ## Later, we'll do the sensor polling here
 
         ## For now, we'll default to 0
-        enforcer_state.put('0')
+        enforcer_state.put(random.random())
 
         ## Simulate polling sensors via sleep
         time.sleep(10)

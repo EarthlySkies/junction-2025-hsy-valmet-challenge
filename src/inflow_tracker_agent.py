@@ -3,6 +3,7 @@
 ## Output is between 0.0 and +1.0
 
 import time
+import random
 
 def inflow_tracker_agent(desire_output):
     while True:
@@ -10,5 +11,5 @@ def inflow_tracker_agent(desire_output):
     ## Later, we'll do the sensor polling here
 
     ## For now, we'll default to 0
-        desire_output.put('0.2')
+        desire_output.put(random.random())
         time.sleep(5)
