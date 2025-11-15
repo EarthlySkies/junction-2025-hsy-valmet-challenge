@@ -22,7 +22,7 @@ from openpyxl import load_workbook
 
 EXCEL_FILE_PATH = 'Hackathon_HSY_data.xlsx'
 DATE_COLUMN_INDEX = 1  # Column A: "Time stamp"
-PRICE1_COLUMN_INDEX = 30  # Column AD: "High price"
+#PRICE1_COLUMN_INDEX = 30  # Column AD: "High price"
 PRICE2_COLUMN_INDEX = 31 # Column AE: "Normal price"
 
 NEW_DATE_FORMAT = "%d/%m/%y %I:%M:%S %p"
@@ -56,28 +56,44 @@ def excel_to_tuple(PRICE_COLUMN_INDEX):
     return time_list
 
 def adays_data(price_list):
-    today = price_list[0][0].day #for now, we just the first day on the dataset
+    first_day = price_list[0][0].day
     todays_prices = []
+    i = 0
     for hour_min, price in price_list:
-        todays_prices.append((hour_min.time(),price))
-        if hour_min.day != today:
+        todays_prices.append((hour_min, price))
+        if hour_min.day != first_day:
             break
-    todays_prices.pop()
+        i += 1
+    second_day = price_list[i][0].day
+    for hour_min, price in price_list[i:]:
+        todays_prices.append((hour_min, price))
+        if hour_min.day != second_day:
+            break
+    todays_prices.pop()   # remove first element from next day
     return todays_prices
+
 
 def optimal_time_to_empty(price_list):
     hourly_prices = adays_data(price_list)
-    min_tuple = min(hourly_prices, key=lambda x: x[1])
-    return min_tuple[0]
+    window_size = 8
+    best_sum = float('inf')
+    best_start = None
+    for i in range(len(hourly_prices) - window_size + 1):
+        window = hourly_prices[i:i + window_size]
+        price_sum = sum(price for _, price in window)
+        if price_sum < best_sum:
+            best_sum = price_sum
+            best_start = i
 
-def main():
-    price1_list = excel_to_tuple(PRICE1_COLUMN_INDEX)
+    return (hourly_prices[best_start], hourly_prices[best_start + window_size - 1])
+
+def optimal_tunnelwindow():
+    #price1_list = excel_to_tuple(PRICE1_COLUMN_INDEX)
     price2_list = excel_to_tuple(PRICE2_COLUMN_INDEX)
 
-    bestime_high = optimal_time_to_empty(price1_list)
-    bestime_norm = optimal_time_to_empty(price2_list)
-    print("best time to empty the tunnel is:")
-    print(f"on a normal day: {bestime_norm}")
-    print(f"on a expensive day: {bestime_high}")
+    #precipitation = rain_tracker_agent()
+    #bestime_high = optimal_time_to_empty(price1_list)
+    bestime = optimal_time_to_empty(price2_list) # tuple( datetime(YY,MM,DD,hh,mm), price)
+    return bestime
 
-main()
+optimal_tunnelwindow()
