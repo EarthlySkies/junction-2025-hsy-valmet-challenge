@@ -9,29 +9,33 @@ import safety_compliance_enforcer as sce
 import inflow_tracker_agent as ita
 
 if __name__ == '__main__':
-## Start agents and workers here
+  ## Start agents and workers here
+  ##
+  ## We'll need to get the agents into their own processes as they'll be making
+  ## blocking operations. If we try to run everything in a single process, we'll
+  ## be blocking ourselves.
 
   ## "Spawn" is the recommended method for Python
-  ## Actual forking is more resource expensive
+  ## Actual "proper" forking is more expensive
   mp.set_start_method('spawn')
 
-  ## Safety compliance enforcer worker
+  ## Safety compliance enforcer worker start
   sce_read_socket = mp.Queue()
   safety_compliance_enforcer_worker = mp.Process(target= sce.safety_compliance_enforcer, args=(sce_read_socket,))
   safety_compliance_enforcer_worker.start()
 
-  ## Inflow tracker agent
+  ## Inflow tracker agent start
   ita_read_socket = mp.Queue()
   inflow_tracker_agent = mp.Process(target= ita.inflow_tracker_agent, args=(ita_read_socket,))
   inflow_tracker_agent.start()
 
-## Start safety-compliance-enforcer
+  ## Rain tracker agent start
 
-## We'll need to fork the agents into their own processes as they'll be making
-## blocking operations. If we try to run everything in a single process, we'll
-## be blocking ourselves.
+  ## Electricity tracker agent start
 
-## Loop
+  ## Storage tracker agent start
+
+  ## Loop
   while True:
     ## Poll agents here
     ## Use queues, as the data transfers is only one way: child -> parent, i.e. agent -> controller
@@ -48,5 +52,5 @@ if __name__ == '__main__':
 
     ## Simulate operations via sleep
     time.sleep(1)
-    
-    ## Pass sum of agent desires to plan executor here
+
+    ## Pass agent states to plan executor
