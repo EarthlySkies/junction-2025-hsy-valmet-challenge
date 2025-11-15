@@ -8,6 +8,23 @@
 ## limit, this enforcer will ensure more pumps are activated to prevent
 ## overflows and safety limits.
 
+
+
+## This worker has three states:
+## -1: Reduce pumping to minimum
+##  0: No output (see note above)
+## +1: Pump at maximum
+
 import time
-def safety_compliance_enforcer():
-    
+def safety_compliance_enforcer(enforcer_state):
+    ## This is the state of the enforcer
+    ## Acceptable values are -1, 0, +1
+    enforcer_state = 0
+
+    ## In this loop, we poll various sensors to ensure that the system is operating
+    ## within predefined safety margins. If the system passes a safety marging,
+    ## we respond to it by either halting the pumps or pumping at maximum capacity,
+    ## depending on the kind of safety hazard we're experiencing.
+    while True:
+        ## For now, we only have placeholder code
+        time.sleep(10)

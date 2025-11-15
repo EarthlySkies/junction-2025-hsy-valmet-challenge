@@ -4,7 +4,7 @@
 import os
 import multiprocessing as mp
 
-import safety_compliance_enforcer
+import safety_compliance_enforcer as sce
 
 if __name__ == '__main__':
 ## Start agents and workers here
@@ -12,8 +12,13 @@ if __name__ == '__main__':
   ## "Spawn" is the recommended method for Python
   ## Actual forking is more resource expensive
   mp.set_start_method('spawn')
-  ## This queue is for reading data from the agents
-  mp_queue = mp.Queue()
+
+  ## Safety compliance enforcer worker
+  sce_read_socket = mp.Queue()
+  safety_compliance_enforcer_worker = mp.Process(target= sce.safety_compliance_enforcer, args=(sce_read_socket,))
+  safety_compliance_enforcer_worker.start()
+
+  ## 
 
 ## Start safety-compliance-enforcer
 
