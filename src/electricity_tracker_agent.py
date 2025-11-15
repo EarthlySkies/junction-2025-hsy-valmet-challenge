@@ -56,4 +56,6 @@ def electricity_tracker_agent(desire_output):
     ## DEBUG: print
     print(pumping_desire)
 
-electricity_tracker_agent(None)
+# electricity_tracker_agent(None)
+# outflow_request = {"outflow":1}
+# requests.post("http://127.0.0.1:8000/outflow", json=outflow_request, timeout=5)
