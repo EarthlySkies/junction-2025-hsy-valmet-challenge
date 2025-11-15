@@ -8,6 +8,8 @@ import time
 import safety_compliance_enforcer as sce
 import inflow_tracker_agent as ita
 import electricity_tracker_agent as eta
+import storage_tracker_agent as sta
+import plan_executor as pa
 
 if __name__ == '__main__':
   ## Start agents and workers here
@@ -34,9 +36,19 @@ if __name__ == '__main__':
 
   ## Electricity tracker agent start
   eta_read_socket = mp.Queue()
-  
+  electricity_tracker_agent = mp.Process(target= eta.electricity_tracker_agent, args=(eta_read_socket,))
+  electricity_tracker_agent.start()
 
   ## Storage tracker agent start
+  sta_read_socket = mp.Queue()
+  storage_tracker_agent = mp.Process(target= sta.storage_tracker_agent, args=(sta_read_socket,))
+  storage_tracker_agent.start()
+
+  ## Plan executor start
+  ## This needs to be a pipe as we'll need to write data to the executor (a child)
+  pa_write_socket, pa_read_socket = mp.Pipe()
+  plan_executor = mp.Process(target= pa.plan_executor, args=(pa_read_socket,))
+  plan_executor.start()
 
   ## Loop
   while True:
@@ -50,10 +62,18 @@ if __name__ == '__main__':
     ## However, we elected not to do so for this concept, as the smallest unit
     ## of time we'll be working with is 15 minutes, as the pumps can't be controlled
     ## in any less amount of time.
-    print(sce_read_socket.get())
-    print(ita_read_socket.get())
 
-    ## Simulate operations via sleep
-    time.sleep(1)
+    ## Agent desire list
+    agent_desire_list = []
+
+    agent_desire_list.append(sce_read_socket.get())
+    agent_desire_list.append([ita_read_socket.get()])
+    agent_desire_list.append(eta_read_socket.get())
+    agent_desire_list.append(sta_read_socket.get())
 
     ## Pass agent states to plan executor
+    pa_write_socket.send(agent_desire_list)
+
+    ## Simulate operations via sleep
+    ## Placeholder code for now
+    time.sleep(1)
