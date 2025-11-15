@@ -24,9 +24,9 @@ if __name__ == '__main__':
     ## be blocking ourselves.
 
     ## Safety compliance enforcer worker start
-    #sce_read_socket = mp.Queue()
-    #safety_compliance_enforcer_worker = mp.Process(target= sce.safety_compliance_enforcer, args=(sce_read_socket,))
-    #safety_compliance_enforcer_worker.start()
+    sce_read_socket = mp.Queue()
+    safety_compliance_enforcer_worker = mp.Process(target= sce.safety_compliance_enforcer, args=(sce_read_socket,))
+    safety_compliance_enforcer_worker.start()
 
     ## Inflow tracker agent start
     #ita_read_socket = mp.Queue()
@@ -65,15 +65,18 @@ if __name__ == '__main__':
     ## Agent desire list
     agent_desire_list = []
 
-    #agent_desire_list.append(sce_read_socket.get())
+    agent_desire_list.append(sce_read_socket.get())
     #agent_desire_list.append([ita_read_socket.get()])
-    #agent_desire_list.append(eta_read_socket.get())
+    agent_desire_list.append(eta_read_socket.get())
     agent_desire_list.append(sta_read_socket.get())
 
     ## Pass agent states to plan executor
     #pa_write_socket.send(agent_desire_list)
     #pa_write_socket.close()
     #plan_executor.join()
+
+    ## DEBUG: print
+    print(agent_desire_list)
 
     ## Simulate operations via sleep
     ## Placeholder code for now

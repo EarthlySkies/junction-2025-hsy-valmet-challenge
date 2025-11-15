@@ -23,7 +23,7 @@ def safety_compliance_enforcer(enforcer_state):
     ## This is the state of the enforcer
     ## Acceptable values are -1, 0, +1
 
-    ## In this loop, we poll various sensors to ensure that the system is operating
+    ## In this loop, we poll "various sensors" to ensure that the system is operating
     ## within predefined safety margins. If the system passes a safety marging,
     ## we respond to it by either halting the pumps or pumping at maximum capacity,
     ## depending on the kind of safety hazard we're experiencing.
