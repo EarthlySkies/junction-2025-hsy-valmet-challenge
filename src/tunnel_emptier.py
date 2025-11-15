@@ -39,7 +39,7 @@ def excel_to_tuple(PRICE_COLUMN_INDEX):
             price_value = row[PRICE_COLUMN_INDEX - 1].value
             if isinstance(dt_object, datetime) and price_value is not None:
                 time_list.append((dt_object, float(price_value)))
-        print(f"✅ Successfully extracted {len(time_list)} records from XLSX.")
+        #print(f"✅ Successfully extracted {len(time_list)} records from XLSX.")
 
     except FileNotFoundError:
         print(f"❌ Error: File not found at '{EXCEL_FILE_PATH}'. Ensure the path is correct.")
