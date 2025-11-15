@@ -65,7 +65,7 @@ if __name__ == '__main__':
     ## Agent desire list
     agent_desire_list = []
 
-    agent_desire_list.append(sce_read_socket.get())
+    #agent_desire_list.append(sce_read_socket.get())
     #agent_desire_list.append([ita_read_socket.get()])
     agent_desire_list.append(eta_read_socket.get())
     agent_desire_list.append(sta_read_socket.get())
@@ -75,7 +75,13 @@ if __name__ == '__main__':
     #pa_write_socket.close()
     #plan_executor.join()
 
-    ## DEBUG: print
+    ## Enforce safety limits
+    if float(sce_read_socket.get()) == 1:
+      ## TODO: Pumps on at max here
+      ## Skip the rest of the agent desire evaluations as we're in an emergency
+      continue
+
+    ## DEBUG: print 
     print(agent_desire_list)
 
     ## Simulate operations via sleep
