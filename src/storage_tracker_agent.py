@@ -13,7 +13,7 @@ def storage_tracker_agent(desire_output):
     ## DEBUG: print
     print("Current water level: ", current_water_level.text)
 
-    ## Water level should always be below 7.5 meters to stay within pre-approved
+    ## Water level should always be below 8.0 meters to stay within pre-approved
     ## safety margins, as 8.0 is L1 MAX. It should also remain above 0.0, as that
     ## is L1 MIN.
 
