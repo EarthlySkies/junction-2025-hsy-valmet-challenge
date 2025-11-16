@@ -38,9 +38,7 @@ def safety_compliance_enforcer(enforcer_state):
 
         ## Default to no emergency
         emergency = 0
-        
-        ## If the water level is above the safety value, start an emergy empty
-        if current_water_level > 7.5:
+        if current_water_level > 110:
             emergency = 1
         
         ## Pass the enforcement value to main
