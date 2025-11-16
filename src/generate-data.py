@@ -16,7 +16,7 @@ def generate_dry_inflow(n=96):
         x = max(0.5, min(3.0, x))
 
         # round for nicer numbers
-        values.append(2 * round(x, 2))
+        values.append(round(x, 2))
 
     return values
 

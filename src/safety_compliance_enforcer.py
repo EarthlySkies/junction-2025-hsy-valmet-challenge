@@ -37,7 +37,7 @@ def safety_compliance_enforcer(enforcer_state):
         current_water_level = float(current_water_level.text)
 
         emergency = 0
-        if current_water_level > 7.5:
+        if current_water_level > 110:
             emergency = 1
         
         ## For now, we'll default to 0

@@ -19,11 +19,11 @@ def storage_tracker_agent(desire_output):
     ## This is to catch any malformed water level data beyond normal regulations
     if float(current_water_level.text) < 0:
         pumping_desire = 0
-    elif float(current_water_level.text) > 8:
+    elif float(current_water_level.text) > 133:
         pumping_desire = 1
     else:
         ## Else we simply take the percentage of the water level
-        pumping_desire = float(current_water_level.text) / 8
+        pumping_desire = float(current_water_level.text) / 133
 
     ## Output pumping desire to agent watcher
     desire_output.put(pumping_desire)
