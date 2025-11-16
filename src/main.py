@@ -16,7 +16,13 @@ if __name__ == '__main__':
   ## Actual "proper" forking is more expensive
   mp.set_start_method('spawn')
 
-  pump_status_list = [100.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  ## Our default pump statuses which we start with
+  ## This list keeps track of which pump is operating at what capacity
+  ## Index 0-5 is big pumps, index 6-7 is small pumps
+  ## List contains the current operating level of the pumps as 0-100 floats
+  ## We start with defaulting to one small pump on, as one pump must be operational
+  ## at all times regardless of flow.
+  pump_status_list = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0]
   
   
 
@@ -64,11 +70,14 @@ if __name__ == '__main__':
             break
       return arr
 
+    ## We must keep track of the water outflows from L1
     total_outflow = 0
+
     for x in pump_status_list:
       if x == 100.0:
         total_outflow = total_outflow + 1.0
       
+    ## Update simulation server outputs; we'll read them during the next loop
     outflow_request = {"outflow": total_outflow}
     requests.post("http://127.0.0.1:8000/outflow", json=outflow_request, timeout=5)
 

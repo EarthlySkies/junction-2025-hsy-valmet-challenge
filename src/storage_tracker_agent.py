@@ -6,6 +6,7 @@
 ## simply increases its desire as the water level rises in the storage.
 
 import requests
+import time
 
 def storage_tracker_agent(desire_output):
     ## Fetch storage level from the simulation server
@@ -27,3 +28,6 @@ def storage_tracker_agent(desire_output):
 
     ## Output pumping desire to agent watcher
     desire_output.put(pumping_desire)
+
+    ## Simulate operations via placeholder code
+    time.sleep(1)
